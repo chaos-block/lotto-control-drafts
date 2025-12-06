@@ -1,9 +1,9 @@
 #!/bin/bash
-# flash-lotto-node.sh — Bootstrap: Download latest lotto_flash.sh and execute
-# Usage: sudo bash flash-lotto-node.sh <image.img[.xz]> <SD device>
+# flash-lotto-node.sh — Bootstrap: Download latest lotto_flash. sh and execute
+# Usage: sudo bash flash-lotto-node. sh <image.img[.xz]> <SD device>
 
 REPO_OWNER="chaos-block"
-REPO_NAME="lotto-utilities"
+REPO_NAME="lotto-control-drafts"
 BRANCH="main"
 SCRIPT_URL="https://raw.githubusercontent.com/$REPO_OWNER/$REPO_NAME/$BRANCH/lotto_flash.sh"
 
