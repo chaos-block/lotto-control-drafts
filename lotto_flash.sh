@@ -1,4 +1,4 @@
-#!/bin/bash
+cho ""#!/bin/bash
 # lotto_flash.sh — SD Card Imaging + SHA256 Verification
 # Lotto Bitcoin Miners Fleet Provisioning
 # USAGE: sudo ./lotto_flash. sh <image.img[.xz]> <SD device: /dev/sdX>
