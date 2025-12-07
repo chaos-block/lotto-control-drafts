@@ -15,8 +15,8 @@ if [[ -z "$SCRIPT" ]]; then
   exit 1
 fi
 
-# Strip potential markdown code fences (``` lines)
-CLEAN_SCRIPT=$(echo "$SCRIPT" | sed '/^```/d')
+# Strip markdown fences + CRLF \r
+CLEAN_SCRIPT=$(echo "$SCRIPT" | sed '/^```/d; s/\r$//')
 
 echo "Downloaded and cleaned. Running..."
 echo "$CLEAN_SCRIPT" | sudo bash -s "$@"
