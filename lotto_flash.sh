@@ -57,6 +57,11 @@ else
   echo "→ Already mounted – proceeding"
 fi
 
+# Ensure firmware directories exist on boot partition
+mkdir -p "$MOUNT_POINT/firmware"
+mkdir -p "$MOUNT_POINT/firmware/systemd"
+echo "→ Created firmware directories"
+
 # First-boot script (self-destruct)
 cat <<EOF > /mnt/lotto-boot/firmware/firstboot-tailscale.sh  
 #!/bin/bash  
