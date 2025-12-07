@@ -8,9 +8,6 @@ set -euo pipefail
 IMG="${1:-}"
 SDCARD="${2:-}"
 
-# === Prestaged reusable Tailscale key (REPLACE WITH YOUR KEY) ===
-PRESTAGED_KEY="tskey-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # Generate: tailscale key create --expiry=2160h --reuse=500
-
 usage() {
   cat >&2 <<EOF
 USAGE: sudo ./lotto_flash.sh [image.img.xz] <SD device>
@@ -52,17 +49,14 @@ echo "Mounting boot partition $BOOT_PART"
 mkdir -p /mnt/lotto-boot
 mount "$BOOT_PART" /mnt/lotto-boot
 
-# Deploy prestaged key
-echo "$PRESTAGED_KEY" > /mnt/lotto-boot/firmware/tailscale-authkey.txt
-chmod 600 /mnt/lotto-boot/firmware/tailscale-authkey.txt
-
 # First-boot script (self-destruct)
-cat <<'EOF' > /mnt/lotto-boot/firmware/firstboot-tailscale.sh
+cat <<EOF > /mnt/lotto-boot/firmware/firstboot-tailscale.sh
 #!/bin/bash
 set -euo pipefail
 MARKER="/.tailscale-done"
 [[ -f "$MARKER" ]] && exit 0
-AUTHKEY=$(cat /boot/firmware/tailscale-authkey.txt)
+AUTHKEY="${PRESTAGED_KEY:-}"
+[[ -z "$AUTHKEY" ]] && { echo "[$(date)] No prestaged key available" >> /var/log/firstboot-tailscale.log; exit 1; }
 HOSTNAME="lotto-$(tr -d '\0' < /proc/device-tree/serial-number)"
 
 curl -fsSL https://tailscale.com/install.sh | sh
@@ -72,7 +66,7 @@ timeout 120 bash -c 'until ping -c1 8.8.8.8 &>/dev/null; do sleep 1; done'
 tailscale up --authkey="$AUTHKEY" --hostname="$HOSTNAME" --advertise-tags=tag:lotto
 
 touch "$MARKER"
-rm -- "$0" /boot/firmware/tailscale-authkey.txt
+rm -- "$0"
 EOF
 chmod +x /mnt/lotto-boot/firmware/firstboot-tailscale.sh
 
