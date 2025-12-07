@@ -62,6 +62,10 @@ mkdir -p "$MOUNT_POINT/firmware"
 mkdir -p "$MOUNT_POINT/firmware/systemd"
 echo "→ Created firmware directories"
 
+# Enable SSH on first boot
+touch "$MOUNT_POINT/firmware/ssh"
+echo "→ SSH enabled on first boot"
+
 # First-boot script (self-destruct)
 cat <<EOF > /mnt/lotto-boot/firmware/firstboot-tailscale.sh  
 #!/bin/bash  
