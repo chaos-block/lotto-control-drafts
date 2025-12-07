@@ -34,8 +34,7 @@ fi
 [[ ! -e "$IMG" ]] && { echo "ERROR: Image not found"; exit 2; }
 
 printf "Image: %s → %s\n" "$IMG" "$SDCARD"
-read -p "Confirm write to $SDCARD [y/N]: " -n1 confirm
-printf "\n"
+read -p "Confirm write to $SDCARD [y/N]: " confirm
 [[ "$confirm" != "y" ]] && { echo "Aborted"; exit 5; }
 
 # Write + verify (existing logic)
