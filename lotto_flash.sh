@@ -67,7 +67,7 @@ touch "$MOUNT_POINT/firmware/ssh"
 echo "→ SSH enabled on first boot"
 
 # Skip first-boot user wizard – pre-create 'pi' user with password 'raspberry'
-echo "$(echo 'raspberry' | openssl passwd -5 -stdin)" | sed 's/^/pi:/' > "$MOUNT_POINT/userconf"
+echo "pi:$(openssl passwd -6 'raspberry')" > "$MOUNT_POINT/userconf.txt"
 echo "→ Pre-created 'pi' user (password: raspberry) – wizard skipped"
 
 # First-boot script (self-destruct)
