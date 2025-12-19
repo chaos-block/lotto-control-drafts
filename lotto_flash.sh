@@ -90,19 +90,23 @@ EOF
 chmod +x "$MOUNT_POINT/first-boot/firstboot-tailscale.sh"
 echo "→ First-boot Tailscale script deployed"
 
-cat << 'EOF' > $BOOT/etc/systemd/system/lotto-firstboot.service
+cat << 'EOF' > "$MOUNT_POINT/etc/systemd/system/lotto-firstboot.service"
 [Unit]
 Description=Lotto First-Boot Tailscale Setup
 After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/firstboot-tailscale.sh
+ExecStart=/first-boot/firstboot-tailscale.sh
 RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
 EOF
+
+# Enable the service
+ln -sf /etc/systemd/system/lotto-firstboot.service "$MOUNT_POINT/etc/systemd/system/multi-user.target.wants/lotto-firstboot.service"
+echo "→ Lotto first-boot systemd service deployed and enabled"
 
 echo "Tailscale prestaged + first-boot deployed"
 
